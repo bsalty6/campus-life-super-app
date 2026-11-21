@@ -59,3 +59,6 @@ h1, h2, h3 { color: var(--ink); font-weight: 800; }
 
 /* ----- Dining page: meal cards ----- */
 .meal-card img { height: 180px; object-fit: cover; } /* keeps all photos the same size */
+/* ----- Map page ----- */
+#map { height: min(60vh, 460px); border-radius: 0.5rem; border: 1px solid #D5DEE7; }
+.details-panel { background: var(--sky); border-radius: 0.5rem; padding: 1.25rem 1.5rem; }

@@ -12,6 +12,7 @@ const MEALDB = "https://www.themealdb.com/api/json/v1/1";
 document.addEventListener("DOMContentLoaded", () => {
   initHome();
   initDining();
+  initMap();
 });
 
 /* =========================================================
@@ -193,4 +194,21 @@ function renderMeals(meals) {
   // TODO (later): "Add to favorites" saved with localStorage
 }
 
-// TODO: map page - Leaflet map, study spots
+/* =========================================================
+   MAP PAGE: Leaflet map
+   ========================================================= */
+function initMap() {
+  const mapDiv = document.getElementById("map");
+  if (!mapDiv) return; // this page has no map div, so it isn't the map page
+
+  // Create the map centered on the campus coordinates (16 is the zoom level)
+  const map = L.map("map").setView([CAMPUS.lat, CAMPUS.lon], 16);
+
+  // Add OpenStreetMap tiles (the map pictures). The attribution credit is required.
+  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 19,
+    attribution: "&copy; OpenStreetMap contributors"
+  }).addTo(map);
+
+  // TODO (Step 10): study spot markers, list, and filter
+}
