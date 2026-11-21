@@ -27,10 +27,55 @@
     </div>
   </nav>
 </header>
-  <main>
-    <h1>Home</h1>
-    <!-- TODO: page content -->
-  </main>
+  <main id="main">
+  <!-- Hero: greeting, clock, and weather card -->
+  <section class="hero">
+    <div class="container">
+      <div class="row align-items-center g-4">
+        <div class="col-lg-7">
+          <h1 id="greeting">Hello</h1>
+          <p class="lead">Check the weather, find something to eat, and pick a place to study before you head out.</p>
+          <p id="clock" class="clock"></p>
+        </div>
+        <div class="col-lg-5">
+          <section class="weather-card" aria-labelledby="weather-heading">
+            <h2 id="weather-heading" class="h5">Weather on campus</h2>
+            <p id="weather-status" class="mb-1" aria-live="polite">Loading weather...</p>
+            <p id="weather-temp" class="weather-temp"></p>
+            <p id="weather-desc" class="mb-1"></p>
+            <p id="weather-tip" class="mb-3"></p>
+            <button id="refresh-weather" type="button" class="btn btn-light btn-sm">Refresh weather</button>
+          </section>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Feature cards linking to the other pages -->
+  <section class="container py-5" aria-labelledby="tools-heading">
+    <h2 id="tools-heading" class="mb-4">Explore campus tools</h2>
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-4">
+        <article class="card feature-card h-100">
+          <div class="card-body d-flex flex-column">
+            <h3 class="h5 card-title">Dining</h3>
+            <p class="card-text">Browse meal ideas and filter by category.</p>
+            <a href="dining.html" class="btn btn-dark mt-auto">Go to Dining</a>
+          </div>
+        </article>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <article class="card feature-card h-100">
+          <div class="card-body d-flex flex-column">
+            <h3 class="h5 card-title">Study spots</h3>
+            <p class="card-text">Find a quiet place to work on the campus map.</p>
+            <a href="map.html" class="btn btn-dark mt-auto">Go to Map</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+</main>
 
   <!-- TODO: footer -->
 
