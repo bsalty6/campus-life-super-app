@@ -5,9 +5,13 @@
 // click the numbers at the top of the menu to copy them: latitude first, then longitude).
 const CAMPUS = { lat: 42.5006, lon: -90.6646 };
 
+// Base address for TheMealDB (free, no API key needed)
+const MEALDB = "https://www.themealdb.com/api/json/v1/1";
+
 // Run setup code once the page has finished loading
 document.addEventListener("DOMContentLoaded", () => {
   initHome();
+  initDining();
 });
 
 /* =========================================================
@@ -83,5 +87,110 @@ async function loadWeather() {
   }
 }
 
-// TODO: dining page - categories, meal cards (TheMealDB)
+/* =========================================================
+   DINING PAGE: meal cards (API #2: TheMealDB)
+   ========================================================= */
+function initDining() {
+  const grid = document.getElementById("meal-grid");
+  if (!grid) return; // this page has no meal grid, so it isn't the dining page
+
+  const select = document.getElementById("category-select");
+  const form = document.getElementById("meal-form");
+
+  loadCategories();
+
+  // Choosing a different category loads that category's meals
+  select.addEventListener("change", () => loadMealsByCategory(select.value));
+
+  // Submitting the form searches by name (or uses the category if the search box is empty)
+  form.addEventListener("submit", (event) => {
+    event.preventDefault(); // stops the browser from reloading the page
+    const term = document.getElementById("meal-search").value.trim();
+    if (term) searchMeals(term);
+    else loadMealsByCategory(select.value);
+  });
+}
+
+// Fills the dropdown with TheMealDB's categories, then loads the first category's meals
+async function loadCategories() {
+  const select = document.getElementById("category-select");
+  const status = document.getElementById("meal-status");
+  try {
+    const response = await fetch(`${MEALDB}/categories.php`);
+    const data = await response.json();
+    select.innerHTML = "";
+    data.categories.forEach((cat) => {
+      const option = document.createElement("option");
+      option.value = cat.strCategory;
+      option.textContent = cat.strCategory;
+      select.appendChild(option);
+    });
+    loadMealsByCategory(select.value);
+  } catch (error) {
+    console.error(error);
+    status.textContent = "Categories could not load. Check your connection and reload the page.";
+  }
+}
+
+// Gets all meals in one category
+async function loadMealsByCategory(category) {
+  await fetchMeals(`${MEALDB}/filter.php?c=${encodeURIComponent(category)}`, category + " meals");
+}
+
+// Gets meals whose name matches what the user typed
+async function searchMeals(term) {
+  await fetchMeals(`${MEALDB}/search.php?s=${encodeURIComponent(term)}`, `results for "${term}"`);
+}
+
+// Shared helper: requests a meal list, then hands it to renderMeals()
+async function fetchMeals(url, label) {
+  const status = document.getElementById("meal-status");
+  status.textContent = "Loading meals...";
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error("Request failed: " + response.status);
+    const data = await response.json();
+    renderMeals(data.meals || []); // the API sends null when nothing matches
+    status.textContent = data.meals
+      ? `Showing ${data.meals.length} ${label}.`
+      : `No ${label} found. Try another search.`;
+  } catch (error) {
+    console.error(error);
+    status.textContent = "Meals could not load. Check your connection and try again.";
+  }
+}
+
+// Builds one Bootstrap card per meal. textContent is used (not innerHTML) so text from the API
+// can't inject HTML into the page.
+function renderMeals(meals) {
+  const grid = document.getElementById("meal-grid");
+  grid.innerHTML = ""; // clear old cards first
+  meals.forEach((meal) => {
+    const col = document.createElement("div");
+    col.className = "col-sm-6 col-lg-3";
+
+    const card = document.createElement("article");
+    card.className = "card meal-card h-100";
+
+    const img = document.createElement("img");
+    img.src = meal.strMealThumb;
+    img.alt = meal.strMeal; // alt text is the meal name
+    img.loading = "lazy";
+    img.className = "card-img-top";
+
+    const body = document.createElement("div");
+    body.className = "card-body";
+    const title = document.createElement("h3");
+    title.className = "h6 card-title mb-0";
+    title.textContent = meal.strMeal;
+
+    body.appendChild(title);
+    card.append(img, body);
+    col.appendChild(card);
+    grid.appendChild(col);
+  });
+  // TODO (later): "View details" button with a Bootstrap modal
+  // TODO (later): "Add to favorites" saved with localStorage
+}
+
 // TODO: map page - Leaflet map, study spots

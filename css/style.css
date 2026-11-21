@@ -56,3 +56,6 @@ h1, h2, h3 { color: var(--ink); font-weight: 800; }
 
 /* ----- Footer ----- */
 .site-footer { background: var(--ink); color: #D6E2EE; padding: 1.75rem 0; margin-top: 2rem; }
+
+/* ----- Dining page: meal cards ----- */
+.meal-card img { height: 180px; object-fit: cover; } /* keeps all photos the same size */
