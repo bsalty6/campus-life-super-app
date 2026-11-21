@@ -1,10 +1,58 @@
 /* Campus Life Super App - custom styles */
 
 /* TODO: color and font variables */
-/* TODO: navigation */
-.site-nav { background: #14213D; }
-/* TODO: home page */
-/* TODO: dining page */
-/* TODO: map page */
-/* TODO: footer */
-/* TODO: responsive tweaks */
+/* Campus Life Super App - custom styles */
+
+/* ----- Color and font variables (change these to re-theme the site) ----- */
+:root {
+  --ink: #14213D;      /* navy: nav bar, hero, headings */
+  --brick: #B5483A;    /* red brick accent: buttons */
+  --brick-dark: #8F372C;
+  --sky: #E8F1F8;      /* light blue panels */
+  --paper: #F7F9FB;    /* page background */
+  --text: #1B2430;
+  --muted: #4A5868;
+}
+
+body {
+  font-family: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+  color: var(--text);
+  background: var(--paper);
+  line-height: 1.6;
+}
+
+h1, h2, h3 { color: var(--ink); font-weight: 800; }
+.text-muted { color: var(--muted) !important; } /* darker than Bootstrap's default for contrast */
+
+/* ----- Navigation ----- */
+.site-nav { background: var(--ink); }
+.site-nav .navbar-brand { font-weight: 800; letter-spacing: 0.01em; }
+.site-nav .nav-link { padding: 0.75rem 1rem; }
+.site-nav .nav-link.active { border-bottom: 3px solid var(--brick); }
+
+/* ----- Buttons ----- */
+.btn-brick { background: var(--brick); border-color: var(--brick); color: #fff; font-weight: 600; }
+.btn-brick:hover, .btn-brick:focus { background: var(--brick-dark); border-color: var(--brick-dark); color: #fff; }
+.btn:focus-visible, a:focus-visible, select:focus-visible, input:focus-visible {
+  outline: 3px solid #F2B705;   /* high-visibility keyboard focus ring */
+  outline-offset: 2px;
+}
+
+/* ----- Home page ----- */
+.hero { background: var(--ink); color: #fff; padding: 3.5rem 0; }
+.hero h1 { color: #fff; font-size: clamp(2rem, 5vw, 3.25rem); }
+.clock { font-size: 1.1rem; color: #D6E2EE; margin-bottom: 0; }
+
+.weather-card {
+  background: #1F3157;
+  border: 1px solid #3A4D78;
+  border-radius: 0.75rem;
+  padding: 1.25rem 1.5rem;
+}
+.weather-card h2 { color: #fff; }
+.weather-temp { font-size: 2.75rem; font-weight: 800; line-height: 1; margin-bottom: 0.25rem; }
+
+.feature-card { border: 1px solid #D5DEE7; }
+
+/* ----- Footer ----- */
+.site-footer { background: var(--ink); color: #D6E2EE; padding: 1.75rem 0; margin-top: 2rem; }
