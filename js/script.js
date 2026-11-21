@@ -3,8 +3,16 @@
 /* ---------- Settings you should change ---------- */
 // TODO: replace with your campus's coordinates (in Google Maps, right-click your campus and
 // click the numbers at the top of the menu to copy them: latitude first, then longitude).
-const CAMPUS = { lat: 42.5006, lon: -90.6646 };
+const CAMPUS = { lat: 42.5035, lon: -90.6808 };
 
+// TODO: replace these placeholder spots with real places on your campus.
+// Get each spot's coordinates the same way you got the campus ones.
+// "noise" must be either "Quiet" or "Group" so the filter works.
+const STUDY_SPOTS = [
+  { name: "Library", lat: 42.50323511746102, lon: -90.67985172202826, noise: "Quiet", hours: "Check the Loras library website" },
+  { name: "Lounge", lat: 42.50421186048267, lon: -90.67905037186392, noise: "Group", hours: "Check the Loras website" },
+  { name: "Outside seating", lat: 42.50445101398347, lon: -90.67895223521292, noise: "Group", hours: "Open anytime" }
+];
 // Base address for TheMealDB (free, no API key needed)
 const MEALDB = "https://www.themealdb.com/api/json/v1/1";
 
@@ -195,7 +203,7 @@ function renderMeals(meals) {
 }
 
 /* =========================================================
-   MAP PAGE: Leaflet map
+   MAP PAGE: Leaflet map, study spot markers, list, and filter
    ========================================================= */
 function initMap() {
   const mapDiv = document.getElementById("map");
@@ -210,5 +218,51 @@ function initMap() {
     attribution: "&copy; OpenStreetMap contributors"
   }).addTo(map);
 
-  // TODO (Step 10): study spot markers, list, and filter
+  // A layer group holds all the markers so they can be cleared and redrawn when the filter changes
+  const markerLayer = L.layerGroup().addTo(map);
+  const list = document.getElementById("spot-list");
+  const filter = document.getElementById("noise-filter");
+
+  // Draws a marker and a list item for every spot that matches the current filter
+  function showSpots() {
+    markerLayer.clearLayers(); // remove old markers
+    list.innerHTML = "";       // remove old list items
+    const chosen = filter.value;
+
+    STUDY_SPOTS
+      .filter((spot) => chosen === "all" || spot.noise === chosen)
+      .forEach((spot) => {
+        // Marker on the map: shows the name in a popup and updates the details panel when clicked
+        const marker = L.marker([spot.lat, spot.lon]).addTo(markerLayer);
+        marker.bindPopup(spot.name);
+        marker.on("click", () => showDetails(spot));
+
+        // List item: a real <button> so keyboard users can select a spot too
+        const item = document.createElement("li");
+        item.className = "list-group-item p-0";
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "btn text-start w-100 py-2 px-3";
+        button.textContent = spot.name;
+        button.addEventListener("click", () => {
+          map.setView([spot.lat, spot.lon], 17); // zoom in on the spot
+          marker.openPopup();
+          showDetails(spot);
+        });
+        item.appendChild(button);
+        list.appendChild(item);
+      });
+  }
+
+  // Fills the details panel under the map
+  function showDetails(spot) {
+    document.getElementById("spot-details-text").textContent =
+      `${spot.name}. Noise level: ${spot.noise}. Hours: ${spot.hours}.`;
+  }
+
+  // Redraw whenever the filter dropdown changes, and once when the page loads
+  filter.addEventListener("change", showSpots);
+  showSpots();
+
+  // TODO (later): "Save as favorite" with localStorage
 }

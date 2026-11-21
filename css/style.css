@@ -62,3 +62,4 @@ h1, h2, h3 { color: var(--ink); font-weight: 800; }
 /* ----- Map page ----- */
 #map { height: min(60vh, 460px); border-radius: 0.5rem; border: 1px solid #D5DEE7; }
 .details-panel { background: var(--sky); border-radius: 0.5rem; padding: 1.25rem 1.5rem; }
+#spot-list .list-group-item:hover { background: var(--sky); }
