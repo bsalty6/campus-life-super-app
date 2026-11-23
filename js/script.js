@@ -1,13 +1,8 @@
 /* Campus Life Super App - script.js (shared by all pages) */
 
-/* ---------- Settings you should change ---------- */
-// TODO: replace with your campus's coordinates (in Google Maps, right-click your campus and
-// click the numbers at the top of the menu to copy them: latitude first, then longitude).
 const CAMPUS = { lat: 42.5035, lon: -90.6808 };
 
-// TODO: replace these placeholder spots with real places on your campus.
-// Get each spot's coordinates the same way you got the campus ones.
-// "noise" must be either "Quiet" or "Group" so the filter works.
+
 const STUDY_SPOTS = [
   { name: "Library", lat: 42.50323511746102, lon: -90.67985172202826, noise: "Quiet", hours: "Check the Loras library website" },
   { name: "Lounge", lat: 42.50421186048267, lon: -90.67905037186392, noise: "Group", hours: "Check the Loras website" },
