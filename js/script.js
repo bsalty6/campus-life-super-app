@@ -58,8 +58,10 @@ function describeWeather(code) {
 
 // Gets current weather from Open-Meteo (no API key needed) and fills in the weather card
 async function loadWeather() {
+  const card = document.getElementById("weather-card");
   const status = document.getElementById("weather-status");
-  status.textContent = "Loading weather...";
+  // Soft fail: the card stays hidden until real data arrives
+  if (!card.hidden) status.textContent = "Refreshing weather...";
 
   const url = "https://api.open-meteo.com/v1/forecast" +
     `?latitude=${CAMPUS.lat}&longitude=${CAMPUS.lon}` +
@@ -84,10 +86,11 @@ async function loadWeather() {
     else if (temp < 55) tip = "Bring a jacket.";
     document.getElementById("weather-tip").textContent = tip;
     status.textContent = "Updated just now.";
+    card.hidden = false; // show the card now that there is data
   } catch (error) {
-    // Tell the user what happened and what to do
     console.error(error);
-    status.textContent = "Weather could not load. Check your connection and select Refresh weather.";
+    // If the card was never shown, leave it hidden. If this was a refresh, keep the old data and say so.
+    if (!card.hidden) status.textContent = "Weather could not refresh. Try again in a moment.";
   }
 }
 
